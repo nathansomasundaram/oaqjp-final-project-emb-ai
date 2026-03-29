@@ -28,3 +28,5 @@ def emotion_detector(text_to_analyse): # Define a function named emotion_detecto
 
     # Print all emotions and their scores
     print_emotions(emotionlist)
+
+    return dominant
