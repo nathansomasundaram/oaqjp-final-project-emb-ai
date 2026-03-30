@@ -5,7 +5,7 @@
 # Import Flask, render_template, request from the flask pramework package : 
 # Import the emotion_detector function from the package created: 
 from flask import Flask, render_template, request 
-from emotiondetection.emotion_detection import emotion_detector
+from emotiondetection.emotion_detection import emotion_detector, print_emotions
 
 #Initiate the flask app : 
 app = Flask("Emotion Detector")
@@ -20,13 +20,10 @@ def sent_analyzer():
     text_to_analyze = request.args.get('textToAnalyze')
 
     # Pass the text to the sentiment_analyzer function and store the response 
-    response = emotion_detector(text_to_analyze)
+    emotionlist = emotion_detector(text_to_analyze)
 
-    # Extract the label and score from the response 
-    # label = response['label'] 
-    # score = response['score']
-
-    # return ("The given text has been identified as {} with a score of {}.".format(label.split('_')[1], score))
+    # Prepare emotion list for printing in certain order and format
+    response = print_emotions(emotionlist)     
     return response
 
 @app.route("/")
