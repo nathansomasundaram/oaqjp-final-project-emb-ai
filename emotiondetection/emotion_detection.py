@@ -18,8 +18,9 @@ def print_emotions(emotion_dict):
     return allemotions
 
 def emotion_detector(text_to_analyse): # Define a function named emotion_detector that takes a string input (text_to_analyse) 
+    # Handle empty input
     if not text_to_analyse.strip():
-        data = {"dominant_emotion":"None"}
+        data = {"Error" : "Pleaseenter input"}
         return data
 
     url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict' # URL of the emotion analysis service 
@@ -27,6 +28,11 @@ def emotion_detector(text_to_analyse): # Define a function named emotion_detecto
     header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"} # Set the headers required for the API request 
     response = requests.post(url, json = myobj, headers=header) # Send a POST request to the API with the text and headers 
 
+    # Handle http 400 response 
+    if (response.status_code == 400) :
+        data = {'anger': 'None', 'disgust': 'None', 'fear': 'None', 'joy': 'None', 'sadness': 'None','dominant_emotion':'None'}
+        return data
+    
     # Parsing the JSON response from the API
     formatted_response = json.loads(response.text)
 
